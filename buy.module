@@ -1,0 +1,158 @@
+<?php
+/**
+ * @file
+ */
+
+function buy_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#buy':
+      $output = '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The buy module allows users with the <em>Administer site configuration</em> permission to quickly and easily change the buy scheme of themes that have been built to be compatible with it. For more information, see the online handbook entry for <a href="@buy">buy module</a>.', array('@buy' => 'http://drupal.org/documentation/modules/buy')) . '</p>';
+      $output .= '<h3>' . t('Uses') . '</h3>';
+      $output .= '<dl>';
+      $output .= '<dt>' . t('Changing buys') . '</dt>';
+      $output .= '<dd>' . t("Using the buy module allows you to easily change the buy of links, backgrounds, text, and other theme elements. To change the buy settings for a compatible theme, select the <em>Settings</em> link for your theme on the <a href='@configure'>Themes administration page</a>. If you don't see a buy picker on that page, then your theme is not compatible with the buy module. If you are sure that the theme does indeed support the buy module, but the buy picker does not appear, then <a href='@troubleshoot'>follow these troubleshooting procedures</a>.", array('@configure' => url('admin/appearance'), '@troubleshoot' => 'http://drupal.org/node/109457')) . '</dd>';
+      $output .= '<dd>' . t("The buy module saves a modified copy of the theme's specified stylesheets in the files directory. This means that if you make any manual changes to your theme's stylesheet, <em>you must save your buy settings again, even if they haven't changed</em>. This step is required because the module stylesheets (in the files directory) need to be recreated to include your changes.") . '</dd>';
+      $output .= '</dl>';
+      return $output;
+  }
+}
+
+
+
+/**
+ * Implements hook_menu().
+ */
+
+function buy_permission() {
+        return array(
+      'access buy purge' => array(
+      'title' => t('access buy purge'),
+      'description' => t('access buy purge.'),
+    	),
+      'administer buy purge' => array(
+      'title' => t('administer buy purge'),
+      'description' => t('administer buy purge.'),
+    ),
+  );
+}
+
+ 
+function buy_theme() {
+  return array(
+    'buy_html_form' => array(
+    'template'  => 'buy_form',
+    ),
+  );
+}
+
+function buy_menu() {
+  $items['buy'] = array(
+    'title' => t('CDN管理支撑系统'),
+    'description' => '京东管理支撑系统',
+    'page arguments' => array('buy_purge'),
+    'page callback' => 'drupal_get_form',
+    'access callback' => TRUE,
+    'position' => 'left',
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'buy.pages.inc',
+  );
+  
+  $items['buy/list'] = array(
+    'title' => t('主机列表'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('buy_list'),
+    'access callback' => TRUE,
+    //'type' => MENU_DEFAULT_LOCAL_TASK,
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'buy.pages.inc',
+  );
+  $items['buy/purge'] =array(
+  'title' => t('刷新'),
+  'access callback' => TRUE,
+  'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+
+  $items['buy/log'] = array(
+    'title' => t('查看刷新记录'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('buy_purge_log'),
+    'access callback' => TRUE,
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'buy.pages.inc',
+  );
+
+
+
+  $items['buy/add'] = array(
+    'title' => t('添加主机记录'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('buy_add'),
+    'access callback' => TRUE,
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'buy.pages.inc',
+  );
+
+  $items['buy/addidc'] = array(
+    'title' => t('添加数据中心(IDC)'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('buy_add_idc'),
+    'access callback' => TRUE,
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'buy.pages.inc',
+  );
+ 
+ $items['buy/listidc'] = array(
+    'title' => t('数据中心列表(IDC)'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('buy_list_idc'),
+    'access callback' => TRUE,
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'buy.pages.inc',
+  ); 
+
+
+
+  $items['buy/del/%'] = array(
+    'page callback' => 'buy_del',
+    'page arguments' => array(2),
+    'access callback' => TRUE,
+    'file' => 'buy.pages.inc',
+  );
+  
+  $items['buy/edit/%edit'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('buy_edit', 2),
+    //'page arguments' => array(2),
+    'access callback' => TRUE,
+    'file' => 'buy.pages.inc',
+  );
+
+
+  $items['buy/del/idc/%'] = array(
+    'page callback' => 'buy_delidc',
+    'page arguments' => array(3),
+    'access callback' => TRUE,
+    'file' => 'buy.pages.inc',
+  );  
+  
+  $items['buy/edit/idc/%idc_edit'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('buy_editidc', 3), 
+    //'page arguments' => array(2),
+    'access callback' => TRUE,
+    'file' => 'buy.pages.inc',
+  ); 
+
+
+
+
+  return $items;
+}
+function edit_load($id) {
+  //return  db_query("SELECT id, location, ip, port, status, time FROM {buy} WHERE id = :id", array(':id' => $id))->fetchObject();
+  return  db_query("SELECT * FROM {buy} WHERE id = :id", array(':id' => $id))->fetchObject();
+}
+function idc_edit_load($id){
+  return  db_query("SELECT * FROM {buy_idc} WHERE id = :id", array(':id' => $id))->fetchObject();
+  }

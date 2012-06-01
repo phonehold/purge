@@ -1,0 +1,13 @@
+name = buy purge 
+description = for 360buy purge 
+package = 京东
+core = 7.x
+dependencies[] = better_messages 
+dependencies[] = httprl
+ 
+; Information added by drupal.org packaging script on 2011-10-15
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "examples"
+datestamp = "1318680418"
+

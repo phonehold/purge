@@ -1,0 +1,67 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the module.
+ */
+
+function buy_schema() {
+  $schema['buy'] = array(
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+      ),
+      'location' => array(
+        'type' => 'varchar',
+        'length' => '128',
+        'not null' => TRUE,
+      ), 
+      'ip' => array(
+        'type' => 'varchar',
+        'length' => '128',
+        'not null' => TRUE,
+      ),
+       'port' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+      ),  
+
+       'status' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'time' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('id'),
+  );
+   $schema['buy_idc'] = array(
+    'fields' => array(
+      'id' => array('type' => 'serial', 'not null' => TRUE),
+      'name' => array('type' => 'varchar', 'not null' => TRUE,'length' => '128',),
+      'type' => array('type' => 'varchar', 'not null' => TRUE, 'length' => '128',),
+      'address' => array('type' => 'varchar', 'not null' => TRUE,'length' => '128'),
+      'contact' => array('type' => 'varchar','length' => '128'),
+      'phone' => array('type' => 'varchar', 'length' => '128'),
+      'status' => array('type' => 'int', 'not null' => TRUE, 'default' => 0,),
+      'created' => array('type' => 'int', 'not null' => TRUE, 'default' => 0,),
+    ),  
+    'primary key' => array('id'),
+  );
+
+$schema['buy_purgelog'] = array(
+    'fields' => array(
+      'id' => array('type' => 'serial', 'not null' => TRUE),
+      'body' => array('type' => 'blob'),
+      'created' => array('type' => 'int', 'not null' => TRUE, 'default' => 0,),
+    ),  
+    'primary key' => array('id'),
+  );
+
+  return $schema;
+}
