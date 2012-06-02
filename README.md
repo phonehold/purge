@@ -3,4 +3,4 @@
 下面是截图
 <img src="https://github.com/verycdn/purge/raw/master/79.png" />
 <br>
-/html>
+</html>
