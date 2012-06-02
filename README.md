@@ -3,4 +3,11 @@
 下面是截图
 <img src="https://github.com/verycdn/purge/raw/master/79.png" />
 <br>
+
+<img src="https://github.com/verycdn/purge/raw/master/80.png" />
+<br>
+
+<img src="https://github.com/verycdn/purge/raw/master/81.png" />
+<br>
+
 </html>
