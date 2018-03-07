@@ -12,3 +12,4 @@
 	  修复编辑不显示ip port 和IDC机房bug
 	　增加IDC机房
 	　修复显示刷新记录时。port和主机对应关系的bug
+丢失
